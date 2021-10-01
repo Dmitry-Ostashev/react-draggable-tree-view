@@ -106,6 +106,16 @@ export default function (props) {
     };
 
     const onDragEnd = (ev) => {
+        ev.stopPropagation();
+
+        if (selfRef?.current && state.draggingNodeId) {
+            const { top, left, height, width } = selfRef.current.getBoundingClientRect();
+
+            dispatch({
+                type:    ACTION_TYPES.STOP_NODE_DRAGGING,
+                payload: { top, left, height, width, clientX: ev.clientX, clientY: ev.clientY }
+            });
+        }
         // const plainData = [...this.state.plainData];
 
         // const draggingRow = plainData.find(el => el.node && el.node.rowId === this.state.draggingNodeId);
