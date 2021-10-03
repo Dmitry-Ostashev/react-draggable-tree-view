@@ -28,7 +28,7 @@ const treeData = [
     }
 ];
 
-const plainData = [
+const listData = [
     { node: { rowId: 1, name: 'salads' }, depth: 1, parentId: -1 },
     { node: { rowId: 2, name: 'drinks'}, depth: 1, parentId: -1 },
     { node: { rowId: 3, name: 'juice' }, depth: 2, parentId: 2 },
@@ -46,13 +46,24 @@ const plainData = [
 
 describe('treeToList()', () => {
     it('should convert', () => {
-        expect(treeToList(treeData)).toEqual(plainData);
+        expect(treeToList(treeData)).toEqual(listData);
     });
 });
 
 describe('listToTree()', () => {
     it('should convert', () => {
-        console.dir(listToTree(plainData), { depth: null });
-        expect(listToTree(plainData)).toEqual(treeData);
+        expect(listToTree(listData)).toEqual(treeData);
+    });
+});
+
+describe('updateNodeParent()', () => {
+    it('should update parent property', () => {
+        const draggedNode   = listData[8];
+        const dataToProcess = [...listData.slice(0, 4), draggedNode, ...listData.slice(5, 8),  ...listData.slice(9, 12)];
+        
+
+        
+
+
     });
 });

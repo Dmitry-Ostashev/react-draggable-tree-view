@@ -14,52 +14,19 @@ function treeToList (data, depth = 0, parentId = -1) {
     return resultArray;
 };
 
-function listToTree (plainData) {
-    const result =      [];
-    const parentStack = {};
+function updateNodeParent (listData, nodeId) {
+    
+}
 
-    let depth = 1;
+function listToTree (listData, parentId = -1) {
+    const result = listData.filter(el => el.parentId === parentId).map(el => el.node);
 
-    plainData.forEach(el => {
-        if (el.depth === depth) {
-            if (parentStack[depth - 1]) {
-                const parent = parentStack[depth - 1];
+    for (let el of result) {
+        const children = listToTree(listData, el.rowId);
 
-                parent.children.push(el.node);
-            }
-            else
-                result.push(el.node);
-            
-            parentStack[el.depth] = el.node;
-
-            return;
-        }
-
-        if (el.depth > depth) {
-            let prevEl = result[result.length - 1];
-
-            if (parentStack[depth])
-                prevEl = parentStack[depth];
-            
-            parentStack[depth] = prevEl;
-
-            prevEl.children = [el.node];
-
-            
-            depth = el.depth;
-
-            return;
-        }
-        
-        let prevEl = parentStack[el.depth - 1];
-
-        if (prevEl)
-            prevEl.children.push(el.node);
-        else
-            result.push(el.node);
-
-        depth = el.depth;
-    });
+        if (children?.length)        
+            el.children = children;
+    }
 
     return result;
 }
