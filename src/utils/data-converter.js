@@ -15,7 +15,29 @@ function treeToList (data, depth = 0, parentId = -1) {
 };
 
 function updateNodeParent (listData, nodeId) {
-    
+    const result = [...listData];
+
+    const currentElIndex = result.findIndex(el => el.node.rowId === nodeId);
+    const currentEl      = result[currentElIndex];
+
+    console.log(currentElIndex);
+
+    if (!currentEl)
+        return result;
+
+    if (currentElIndex > 0) {
+        let index = currentElIndex - 1;
+
+        while(index > 0 && result[index].depth >= currentEl.depth)
+            index--;
+
+        currentEl.depth = result[index].depth
+    }
+    if (!currentElIndex)
+        result[currentElIndex].parentId = -1;
+
+    console.dir(result, { depth: null });
+    return result;
 }
 
 function listToTree (listData, parentId = -1) {
@@ -33,5 +55,6 @@ function listToTree (listData, parentId = -1) {
 
 module.exports = {
     treeToList,
-    listToTree
+    listToTree,
+    updateNodeParent
 };

@@ -1,4 +1,4 @@
-const { treeToList, listToTree } = require('../../src/utils/data-converter');
+const { treeToList, listToTree, updateNodeParent } = require('../../src/utils/data-converter');
 
 const treeData = [
     { rowId: 1, name: 'salads' },
@@ -52,18 +52,18 @@ describe('treeToList()', () => {
 
 describe('listToTree()', () => {
     it('should convert', () => {
-        expect(listToTree(listData)).toEqual(treeData);
+        expect(listToTree([...listData])).toEqual(treeData);
     });
 });
 
 describe('updateNodeParent()', () => {
     it('should update parent property', () => {
         const draggedNode   = listData[8];
-        const dataToProcess = [...listData.slice(0, 4), draggedNode, ...listData.slice(5, 8),  ...listData.slice(9, 12)];
+        const dataToProcess = [...listData.slice(0, 5), draggedNode, ...listData.slice(5, 8),  ...listData.slice(9)];
         
+        const processedData = updateNodeParent(dataToProcess, draggedNode.node.rowId);
 
-        
-
-
+        expect(processedData[5].parentId).toEqual(5);
+        // console.dir(dataToProcess, { depth: null });
     });
 });
