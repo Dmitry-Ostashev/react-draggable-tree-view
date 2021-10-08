@@ -28,15 +28,14 @@ function updateNodeParent (listData, nodeId) {
     if (currentElIndex > 0) {
         let index = currentElIndex - 1;
 
-        while(index > 0 && result[index].depth >= currentEl.depth)
+        while(index > -1 && result[index].depth >= currentEl.depth)
             index--;
 
-        currentEl.parentId = result[index].node.rowId
+        currentEl.parentId = index > -1 ? result[index].node.rowId : -1;
     }
     if (!currentElIndex)
         currentEl.parentId = -1;
 
-    console.dir(result, { depth: null });
     return result;
 }
 
