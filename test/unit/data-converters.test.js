@@ -44,26 +44,51 @@ const listData = [
     { node: { rowId: 13, name: 'bakery cookies' }, depth: 2, parentId: 11 },
 ];
 
-describe('treeToList()', () => {
-    it('should convert', () => {
-        expect(treeToList(treeData)).toEqual(listData);
-    });
-});
+// describe('treeToList()', () => {
+//     it('should convert', () => {
+//         expect(treeToList(treeData)).toEqual(listData);
+//     });
+// });
 
 describe('listToTree()', () => {
     it('should convert', () => {
-        expect(listToTree([...listData])).toEqual(treeData);
+        const data = JSON.parse(JSON.stringify(listData));
+
+        expect(listToTree(data)).toEqual(treeData);
     });
 });
 
 describe('updateNodeParent()', () => {
-    it('should update parent property', () => {
-        const draggedNode   = listData[8];
-        const dataToProcess = [...listData.slice(0, 5), draggedNode, ...listData.slice(5, 8),  ...listData.slice(9)];
+    let data = [];
+
+    beforeEach(() => {
+        data = JSON.parse(JSON.stringify(listData));
+    });
+
+    it('should update when previous node is parent', () => {
+        const draggedNode   = data[8];
+        const dataToProcess = [...data.slice(0, 5), draggedNode, ...data.slice(5, 8),  ...data.slice(9)];
         
         const processedData = updateNodeParent(dataToProcess, draggedNode.node.rowId);
 
         expect(processedData[5].parentId).toEqual(5);
-        // console.dir(dataToProcess, { depth: null });
+    });
+
+    it('should update when previous node is parent', () => {
+        const draggedNode   = data[8];
+        const dataToProcess = [...data.slice(0, 5), draggedNode, ...data.slice(5, 8),  ...data.slice(9)];
+        
+        const processedData = updateNodeParent(dataToProcess, draggedNode.node.rowId);
+
+        expect(processedData[5].parentId).toEqual(5);
+    });
+
+    it('should update when previous node is parent', () => {
+        const draggedNode   = data[8];
+        const dataToProcess = [...data.slice(0, 5), draggedNode, ...data.slice(5, 8),  ...data.slice(9)];
+        
+        const processedData = updateNodeParent(dataToProcess, draggedNode.node.rowId);
+
+        expect(processedData[5].parentId).toEqual(5);
     });
 });

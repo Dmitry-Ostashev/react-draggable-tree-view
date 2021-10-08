@@ -31,10 +31,10 @@ function updateNodeParent (listData, nodeId) {
         while(index > 0 && result[index].depth >= currentEl.depth)
             index--;
 
-        currentEl.depth = result[index].depth
+        currentEl.parentId = result[index].node.rowId
     }
     if (!currentElIndex)
-        result[currentElIndex].parentId = -1;
+        currentEl.parentId = -1;
 
     console.dir(result, { depth: null });
     return result;
