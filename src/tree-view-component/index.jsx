@@ -58,6 +58,34 @@ function updateNodeDropPlace (state, payload) {
 }
 
 function stopNodeDragging (state, payload) {
+        const { plainData, draggingNodeId, dropPlace } = state;
+
+        let newData = [...plainData];
+
+        if (draggingNodeId) {
+            const newDropPlace   = getNewDropPlace({ draggingNodeId, plainData,  prevDropPlace: dropPlace,  ...payload });
+            const { row, depth } = newDropPlace;
+            const draggingRow    = plainData.find(el => el.node?.rowId === draggingNodeId);
+            const nodeIndex      = plainData.indexOf(draggingRow);
+            const prevIndex      = Math.min(nodeIndex, row);
+            const nextIndex      = Math.max(nodeIndex, row);
+
+            draggingRow.depth = depth;
+
+            if (row !== nodeIndex) {
+                newData = [...plainData.slice(0, prevIndex)];
+
+                if (row <= nodeIndex)
+                    newData.push(draggingRow);
+    
+                newData.push(...plainData.slice(prevIndex, nextIndex));
+    
+                if (row > nodeIndex)
+                    newData.push(draggingRow);
+    
+                newData.push(...plainData.slice(nextIndex, plainData.length));
+            }            
+        }
 
 }
 

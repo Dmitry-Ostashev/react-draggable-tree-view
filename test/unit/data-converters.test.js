@@ -44,11 +44,11 @@ const listData = [
     { node: { rowId: 13, name: 'bakery cookies' }, depth: 2, parentId: 11 },
 ];
 
-// describe('treeToList()', () => {
-//     it('should convert', () => {
-//         expect(treeToList(treeData)).toEqual(listData);
-//     });
-// });
+describe('treeToList()', () => {
+    it('should convert', () => {
+        expect(treeToList(treeData)).toEqual(listData);
+    });
+});
 
 describe('listToTree()', () => {
     it('should convert', () => {
