@@ -4,10 +4,11 @@ import { ACTION_TYPES, reducer } from './actions';
 import NodeRow from './tree-view-node-row';
 
 export default function (props) {
-    const selfRef = useRef();
+    const selfRef             = useRef();
+    const { data, rowHeight } = props;
 
     const [state, dispatch] = useReducer(reducer, {
-        data:           props.data,
+        data,
         plainData:      treeToList(props.data),
         draggingNodeId: 0,
         dropPlace: null
