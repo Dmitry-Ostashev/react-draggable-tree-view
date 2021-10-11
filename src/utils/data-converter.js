@@ -20,8 +20,6 @@ function updateNodeParent (listData, nodeId) {
     const currentElIndex = result.findIndex(el => el.node.rowId === nodeId);
     const currentEl      = result[currentElIndex];
 
-    console.log(currentElIndex);
-
     if (!currentEl)
         return result;
 
