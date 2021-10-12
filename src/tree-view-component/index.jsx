@@ -3,9 +3,12 @@ import { treeToList } from '../utils/data-converter';
 import { ACTION_TYPES, reducer } from './actions';
 import NodeRow from './tree-view-node-row';
 
+const DEFAULT_ROW_HEIGHT = 32;
+const DEFAULT_ROW_INDENT = 32;
+
 export default function (props) {
     const selfRef             = useRef();
-    const { data, rowHeight } = props;
+    const { data, rowHeight = DEFAULT_ROW_HEIGHT, rowIndent = DEFAULT_ROW_INDENT } = props;
 
     const [state, dispatch] = useReducer(reducer, {
         data,
@@ -31,7 +34,7 @@ export default function (props) {
 
             dispatch({
                 type:    ACTION_TYPES.UPDATE_NODE_DROP_PLACE,
-                payload: { top, left, height, width, clientX: ev.clientX, clientY: ev.clientY }
+                payload: { rowHeight, rowIndent, top, left, height, width, clientX: ev.clientX, clientY: ev.clientY }
             });
         }
     };
@@ -44,30 +47,23 @@ export default function (props) {
 
             dispatch({
                 type:    ACTION_TYPES.STOP_NODE_DRAGGING,
-                payload: { top, left, height, width, clientX: ev.clientX, clientY: ev.clientY }
+                payload: { rowHeight, rowIndent, top, left, height, width, clientX: ev.clientX, clientY: ev.clientY }
             });
         }
-        // const plainData = [...this.state.plainData];
-
-        // const draggingRow = plainData.find(el => el.node && el.node.rowId === this.state.draggingNodeId);
-
-        // draggingRow.depth = this.state.dropPlace.depth;
-        // plainData.splice(plainData.indexOf(draggingRow), 1);
-        // plainData.splice(this.state.dropPlace.row, 0, draggingRow);
-        // this.setState({ draggingNodeId: 0, dropPlace: null, plainData  });
     };
 
     const { draggingNodeId, dropPlace } = state;
-
-    const plainData = [...state.plainData];
+    const plainData                     = [...state.plainData];
 
     if (dropPlace)
-        plainData.splice(dropPlace.row, 0, { depth: dropPlace.depth })
-
+        plainData.splice(dropPlace.row, 0, { depth: dropPlace.depth });
+    
     return (
         <div data-label="tree-container" ref={selfRef} style={{ display: 'flex', flexDirection: 'column', width: '250' }} >
             {plainData.map((row) =><NodeRow key={row.node && row.node.rowId || 0} {...row} 
                                             draggingNodeId={draggingNodeId}
+                                            rowHeight={rowHeight}
+                                            rowIndent={rowIndent}
                                             onDragStart={onDragStart}
                                             onDrag={onDrag}
                                             onDragEnd={onDragEnd}/>)}

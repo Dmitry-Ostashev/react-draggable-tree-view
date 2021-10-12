@@ -1,28 +1,36 @@
-const { ACTION_TYPES, reducer } = require('../../src/tree-view-component/actions');
-const { listData }              = require('../data/test-data');
+import { calculateDropPlace } from '../../src/utils/calculate-drop-place';
+import { ACTION_TYPES, reducer } from '../../src/tree-view-component/actions';
+import { listData } from '../data/test-data';
 
-describe(ACTION_TYPES.START_NODE_DRAGGING, () => {
-    it('should set draggingNodeId', () => {});
-});
+jest.mock('../../src/utils/calculate-drop-place', () => ({ calculateDropPlace: jest.fn() }));
 
-describe(ACTION_TYPES.UPDATE_NODE_DROP_PLACE, () => {
-    it('should calculate new drop place', () => {});
-});
+let row = 1;
+
+calculateDropPlace.mockImplementation(() => ({ row, depth: 3 }));
 
 describe(ACTION_TYPES.STOP_NODE_DRAGGING, () => {
     it('should drop into a right place', () => {
-        const state = {
+        const draggingNodeId = 9;
+        const state          = {
             plainData:      listData,
-            draggingNodeId: 9,
-            dropPlace: { depth: 2, row: 3 }
+            draggingNodeId,
+            dropPlace: { depth: 3, row: 13 }
         };
 
-        const payload = {
-            top: 0, 
-            left: 0,
-            clientX: 15,
-            clientY: 15,
-            height: , width
-        };
+        const draggedNodePredicate = el => el.node.rowId === draggingNodeId;
+        let newState               = reducer(state, { type: ACTION_TYPES.STOP_NODE_DRAGGING, payload: {} });
+
+        expect(newState.plainData.length).toEqual(listData.length);
+        expect(newState.plainData.filter(draggedNodePredicate).length).toEqual(1);
+        expect(newState.plainData.findIndex(draggedNodePredicate)).toEqual(1);
+
+        row = 12;
+
+        newState = reducer(state, { type: ACTION_TYPES.STOP_NODE_DRAGGING, payload: {} });
+
+        expect(newState.plainData.length).toEqual(listData.length);
+        expect(newState.plainData.filter(draggedNodePredicate).length).toEqual(1);
+        expect(newState.plainData.findIndex(draggedNodePredicate)).toEqual(11);
+
     });
 });
